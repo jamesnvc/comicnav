@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>ComicNav Options</title>
+    <script src="jquery.js" type="text/javascript"></script>
+    <script src="options_setup.js" type="text/javascript"></script>
+  </head>
+<body>
+  <h3>Add Comic Data</h3>
+  <form id="add_comic_info" action="javascript:alert('Clicked!.')">
+    <fieldset>
+      <legend>Add Settings for a Comic</legend>
+      <label for="uri">Hostname of Comic:</label>
+      <input type="text" name="uri" id="uri"/>
+      <br/>
+      <label for="prev">XPath for Previous link</label>
+      <input type="text" name="prev" id="prev" />
+      <br/>
+      <label for="next">XPath for Next link</label>
+      <input type="text" name="next" id="next" />
+      <br/>
+      <input type="submit" value="Add Info"/>
+    </fieldset>
+  </form>
+  <div id="debug">
+  </div>
+  <h3>Current Setup</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>URI</th>
+        <th>Prev</th>
+        <th>Next</th>
+      </tr>
+    </thead>
+    <tbody id="sites">
+    </tbody>
+  </table>
+</body>

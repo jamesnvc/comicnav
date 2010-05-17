@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <script>
+    function init() {
+      var canvas = document.getElementById('canvas');
+      var ctx = canvas.getContext('2d');
+      
+      ctx.fillStyle = "rgb(200,0,0)";
+      ctx.fillRect(0,0, 19, 19);
+      ctx.clearRect(5, 5, 10, 10)
+      
+      ctx.fillStyle
+      ctx.beginPath();
+      ctx.moveTo(10, 19)
+      ctx.arc(10,10,10, -Math.PI/2, Math.PI/2, false);
+      ctx.closePath();
+      ctx.stroke();
+      
+      chrome.browserAction.setIcon({ "imageData": ctx.getImageData(0,0, canvas.width, canvas.height)});
+      chrome.browserAction.setTitle({ "title": "Testing" });
+    }
+
+    chrome.extension.onRequest.addListener(
+      function(request, sender, sendResponse) {
+        switch (request.name) {
+           case "getPageXPath":
+              var res = JSON.parse(localStorage.getItem(request.hostname));
+              sendResponse(res);
+              break;
+           default:
+              sendResponse({});
+        }
+     }
+    );
+function getPageXpath(hostname) {
+    }
+    </script>
+  </head>
+  <body onload="init()">
+    <canvas id="canvas" width="19" height="19"></canvas>
+  </body>
+</html>
