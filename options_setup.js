@@ -2,9 +2,9 @@ function options_init () {
   $('#add_comic_info').submit(function (event) {
     event.preventDefault();
     var uri = trimmed_uri($('#uri').val());
-    var next_xpath = $('#next').val().replace(/"/g, '\\"');
-    var prev_xpath =$('#prev').val().replace(/"/g, '\\"');
-    var obj_str = "{\"next\": \"" + next_xpath + "\", \"prev\": \"" + prev_xpath + "\"};";
+    var next_xpath = $('#next').val().replace(/"/g, '\\u0022');
+    var prev_xpath =$('#prev').val().replace(/"/g, '\\u0022');
+    var obj_str = "{\"next\": \"" + next_xpath + "\", \"prev\": \"" + prev_xpath + "\"}";
     localStorage.setItem(uri, obj_str);
     display_current_sites();
     }
@@ -19,7 +19,14 @@ function display_current_sites () {
   var tbl = "";
   for (var elt in localStorage) {
     var str = "<tr><td>" + elt + "</td>";
-    var sel = JSON.parse(localStorage.getItem(elt));
+    var sel;
+    try {
+      sel = $.parseJSON(localStorage.getItem(elt));
+    } catch (e) {
+      console.log("Failed to parse JSON!");
+      console.log(e);
+      return;
+    }
     str += "<td>" + sel["prev"] + "</td><td>" + sel["next"] + "</td></tr>";
     tbl += str;
   }

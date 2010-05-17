@@ -1,5 +1,6 @@
 <html>
   <head>
+    <script src="jquery.js" type="text/javascript"></script>
     <script>
     function init() {
       var canvas = document.getElementById('canvas');
@@ -24,7 +25,7 @@
       function(request, sender, sendResponse) {
         switch (request.name) {
            case "getPageXPath":
-              var res = JSON.parse(localStorage.getItem(request.hostname));
+              var res = $.parseJSON(localStorage.getItem(request.hostname));
               sendResponse(res);
               break;
            default:
