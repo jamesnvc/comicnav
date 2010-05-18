@@ -23,18 +23,27 @@
 
     chrome.extension.onRequest.addListener(
       function(request, sender, sendResponse) {
-        switch (request.name) {
-           case "getPageXPath":
-              var res = $.parseJSON(localStorage.getItem(request.hostname));
-              sendResponse(res);
-              break;
-           default:
-              sendResponse({});
+        if (request.name == "getPageXPath") {
+          var json_str;
+          var to_send = { "name": "gotPageXPath" };
+          try {
+            json_str = localStorage.getItem(request.hostname);
+          } catch (e) {
+            chrome.tabs.getSelected(null, function(tab) {
+              chrome.tabs.sendRequest(tab.id, to_send);
+            });
+            return;
+          }
+          to_send.xpath = $.parseJSON(json_str);
+          chrome.tabs.getSelected(null, function(tab) {
+            chrome.tabs.sendRequest(tab.id, to_send);
+          });
+          sendResponse(to_send)
+          return;
+        } else {
+          sendResponse({});
         }
-     }
-    );
-function getPageXpath(hostname) {
-    }
+      });
     </script>
   </head>
   <body onload="init()">

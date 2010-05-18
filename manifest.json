@@ -8,6 +8,9 @@
     "popup": "popup.html",
     "default_title": "ComicNav"
   },
+  "permissions": [
+    "tabs"
+  ],
   "content_scripts": [
     {
       "matches": ["http://*/*"],
