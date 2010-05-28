@@ -39,10 +39,10 @@ function maybeInstall () {
       xpath_obj.next != undefined) {
     console.log("Adding keybindings for this site!");
     $(document).keyup(function (event) {
-      if (event.keyCode == '39') {
+      if (event.keyCode == '39') { // Right arrow
         event.preventDefault();
         gotoNext();
-      } else if (event.keyCode == '37') {
+      } else if (event.keyCode == '37') { // Left arrow
         event.preventDefault();
         gotoPrev();
       }
