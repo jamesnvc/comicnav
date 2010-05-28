@@ -12,8 +12,6 @@ function getXPath() {
   var uri_root = window.location.hostname;
   chrome.extension.onRequest.addListener(
     function(request, sender, sendResp) {
-      console.log("Got response ");
-      console.log(request);
       if (request.name == "gotPageXPath") {
         xpath_obj = request.xpath;
         recieved = true;
@@ -21,10 +19,8 @@ function getXPath() {
         maybeInstall();
       }
     });
-  console.log("Added listener");
   chrome.extension.sendRequest({name: "getPageXPath", hostname: uri_root},
-                               function (response){ console.log("Callback");});
-  console.log("Sent request");
+                               function (response){ });
 }
 
 function gotoPrev() {
@@ -43,7 +39,6 @@ function maybeInstall () {
       xpath_obj.next != undefined) {
     console.log("Adding keybindings for this site!");
     $(document).keyup(function (event) {
-      console.log("Key pressed");
       if (event.keyCode == '39') {
         event.preventDefault();
         gotoNext();
