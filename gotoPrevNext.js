@@ -3,8 +3,8 @@ var recieved = false;
 
 function clickXPath(xpath_str) {
   var e = new XPathEvaluator();
-  var r = e.evaluate(xpath_str,
-    document.documentElement, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+  var r = e.evaluate(xpath_str,document.documentElement, null, 
+                     XPathResult.FIRST_ORDERED_NODE_TYPE, null);
   window.location = r.singleNodeValue.href;
 }
 
