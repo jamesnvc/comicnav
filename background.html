@@ -18,7 +18,6 @@
       ctx.stroke();
       
       chrome.browserAction.setIcon({ "imageData": ctx.getImageData(0,0, canvas.width, canvas.height)});
-      chrome.browserAction.setTitle({ "title": "Testing" });
     }
 
     chrome.extension.onRequest.addListener(
