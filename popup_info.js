@@ -3,7 +3,6 @@ function add_shortcuts (hostname) {
   var prev_xpath =$('#prev').val().replace(/"/g, '\\u0022');
   var obj_str = "{\"next\": \"" + next_xpath + "\", \"prev\": \"" + prev_xpath + "\"}";
   localStorage.setItem(hostname, obj_str);
-  $('#debug').text(obj_str);
   getInfo();
   chrome.tabs.getSelected(null, function(tab) {
     var rqst = { 'from': "popup", 'wants': 'reload' };
