@@ -1,3 +1,16 @@
+function add_shortcuts (hostname) {
+  var next_xpath = $('#next').val().replace(/"/g, '\\u0022');
+  var prev_xpath =$('#prev').val().replace(/"/g, '\\u0022');
+  var obj_str = "{\"next\": \"" + next_xpath + "\", \"prev\": \"" + prev_xpath + "\"}";
+  localStorage.setItem(hostname, obj_str);
+  $('#debug').text(obj_str);
+  getInfo();
+  chrome.tabs.getSelected(null, function(tab) {
+    var rqst = { 'from': "popup", 'wants': 'reload' };
+    chrome.tabs.sendRequest(tab.id, rqst);
+  });
+}
+
 function getInfo() {
   chrome.tabs.getSelected(null, function(tab) {
     var hostname = parseURL(tab.url).host;
@@ -8,14 +21,10 @@ function getInfo() {
       html_str += "<strong>Next</strong>: <code>" + xpath_obj.next + "</code>";
       $('#site_bindings').html(html_str);
     } else { // No bindings exist; set up form to add bindings
-      $('#add_shortcut').submit(function(event) {
+      $('#add_shortcut').submit(function (event) { 
         event.preventDefault();
-        var next_xpath = $('#next').val().replace(/"/g, '\\u0022');
-        var prev_xpath =$('#prev').val().replace(/"/g, '\\u0022');
-        var obj_str = "{\"next\": \"" + next_xpath + "\", \"prev\": \"" + prev_xpath + "\"}";
-        localStorage.setItem(hostname, obj_str);
-        getInfo();
-      })
+        add_shortcuts(hostname);
+      });
     }
   });
 }

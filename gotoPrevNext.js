@@ -10,15 +10,6 @@ function clickXPath(xpath_str) {
 
 function getXPath() {
   var uri_root = window.location.hostname;
-  chrome.extension.onRequest.addListener(
-    function(request, sender, sendResp) {
-      if (request.name == "gotPageXPath") {
-        xpath_obj = request.xpath;
-        recieved = true;
-        sendResp({});
-        maybeInstall();
-      }
-    });
   chrome.extension.sendRequest({name: "getPageXPath", hostname: uri_root},
                                function (response){ });
 }
@@ -52,7 +43,20 @@ function maybeInstall () {
 }
 
 function setup() {
+  chrome.extension.onRequest.addListener(function(request, sender, sendResp) {
+      if (request.name == "gotPageXPath") {
+        xpath_obj = request.xpath;
+        recieved = true;
+        sendResp({});
+        maybeInstall();
+      }
+    });  
   getXPath();
+  chrome.extension.onRequest.addListener(function(rqst, sndr, resp) {
+    if (rqst.from == 'popup' && rqst.wants == 'reload') {
+      getXPath();
+    }
+  });
 }
 
 $(document).ready(setup);
