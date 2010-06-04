@@ -43,6 +43,7 @@ function maybeInstall () {
 }
 
 function setup() {
+  // Add listener for recieving XPath from localStorage
   chrome.extension.onRequest.addListener(function(request, sender, sendResp) {
       if (request.name == "gotPageXPath") {
         xpath_obj = request.xpath;
@@ -52,6 +53,7 @@ function setup() {
       }
     });  
   getXPath();
+  // Add listener for recieving a refresh request from the popup (after adding info)
   chrome.extension.onRequest.addListener(function(rqst, sndr, resp) {
     if (rqst.from == 'popup' && rqst.wants == 'reload') {
       getXPath();
