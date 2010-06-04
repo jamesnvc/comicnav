@@ -6,6 +6,7 @@
   "options_page": "options.html",
   "browser_action": {
     "popup": "popup.html",
+    "default_icon": "ComicNav.png",
     "default_title": "ComicNav"
   },
   "permissions": [
