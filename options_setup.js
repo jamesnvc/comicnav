@@ -34,7 +34,7 @@ function display_current_sites () {
 }
 
 function trimmed_uri (uri) {
-  return uri.replace(/^http:\/\/[^/]*(\/.*$)/, "");
+  return /^(http:\/\/)([^/]*)(\/.*$)/.exec(uri)[2];
 }
 
 $(document).ready(function () {
