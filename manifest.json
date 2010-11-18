@@ -1,6 +1,6 @@
 {
   "name": "ComicNav",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Navigate between comics",
   "background_page": "background.html",
   "options_page": "options.html",
