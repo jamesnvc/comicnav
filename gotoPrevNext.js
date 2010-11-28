@@ -3,7 +3,7 @@ var recieved = false;
 
 function clickXPath(xpath_str) {
   var e = new XPathEvaluator();
-  var r = e.evaluate(xpath_str,document.documentElement, null, 
+  var r = e.evaluate(xpath_str, document.documentElement, null,
                      XPathResult.FIRST_ORDERED_NODE_TYPE, null);
   window.location = r.singleNodeValue.href;
 }
@@ -51,7 +51,7 @@ function setup() {
         sendResp({});
         maybeInstall();
       }
-    });  
+    });
   getXPath();
   // Add listener for recieving a refresh request from the popup (after adding info)
   chrome.extension.onRequest.addListener(function(rqst, sndr, resp) {
