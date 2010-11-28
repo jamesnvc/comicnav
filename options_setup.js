@@ -7,38 +7,43 @@ function editItem (item) {
   var prev_in = document.createElement('input');
   prev_in.setAttribute('value', prev_xpath);
   prev_in.setAttribute('class', 'prev_xpath');
-  $(items[1]).replaceWith(prev_in);
+  var prev_td = document.createElement('td');
+  prev_td.appendChild(prev_in);
+  $(items[1]).replaceWith(prev_td);
 
   var next_in = document.createElement('input');
   next_in.setAttribute('value', next_xpath);
   next_in.setAttribute('class', 'next_xpath');
-  $(items[2]).replaceWith(next_in);
+  var next_td = document.createElement('td');
+  next_td.appendChild(next_in);
+  $(items[2]).replaceWith(next_td);
 
   $('.editItem', row).removeClass('editItem').addClass('saveItem').text('Save');
 }
 
+function unescapeHTML(str) {
+  return $('<p></p>').html(str).text();
+}
+
 function saveItem (item) {
   var row = item[0].parentNode.parentNode;
-  var hostname = $('td', row)[0].innerHTML;
-  var prev_xpath = $('input.prev_xpath', row).attr('value').replace(
-      /"/g, '\\u0022');
-  var next_xpath = $('input.next_xpath', row).attr('value').replace(
-      /"/g, '\\u0022');
-  var obj_str = "{\"next\": \"" + next_xpath + "\", \"prev\": \"" +
-    prev_xpath + "\"}";
+  var items = $('td', row);
+  var hostname = items[0].innerHTML;
+  var prev_xpath = $('input.prev_xpath', row).attr('value');
+  var next_xpath = $('input.next_xpath', row).attr('value');
+  var obj_str = "{\"next\": \"" + next_xpath.replace(/"/g, '\\u0022') +
+    "\", \"prev\": \"" + prev_xpath.replace(/"/g, '\\u0022') + "\"}";
   localStorage.setItem(hostname, obj_str);
 
   var prev_td = document.createElement('td');
-  prev_td.appendChild(document.createTextNode(prev_xpath));
-  $('input.prev_xpath', row).replaceWith(prev_td);
+  prev_td.appendChild(document.createTextNode(unescapeHTML(prev_xpath)));
+  $(items[1]).replaceWith(prev_td);
 
   var next_td = document.createElement('td');
-  next_td.appendChild(document.createTextNode(next_xpath));
-  $('input.next_xpath', row).replaceWith(next_td);
+  next_td.appendChild(document.createTextNode(unescapeHTML(next_xpath)));
+  $(items[2]).replaceWith(next_td);
 
-  $('.editItem', row).removeClass('editItem').addClass('editItem').text('Edit');
-
-  display_current_sites();
+  $('.saveItem', row).removeClass('saveItem').addClass('editItem').text('Edit');
 }
 
 function delItem (item) {
@@ -46,7 +51,7 @@ function delItem (item) {
   // Hostname is the first entry in the row
   var hostname = $('td', row)[0].innerHTML;
   localStorage.removeItem(hostname);
-  display_current_sites();
+  $(row).remove();
 }
 
 function options_init () {
@@ -61,7 +66,7 @@ function options_init () {
     });
   display_current_sites();
 
-  $("#uri").val("xkcd.com");
+  $("#uri").val("http://xkcd.com/");
   $("#prev").val("//div[@class=\"menuCont\"]/ul/li/a[text()=\"< Prev\"]");
   $("#next").val("//div[@class=\"menuCont\"]/ul/li/a[text()=\"Next >\"]");
   $('.delItem').live('click', function(evt) {
@@ -89,8 +94,8 @@ function display_current_sites () {
     try {
       sel = $.parseJSON(localStorage.getItem(elt));
     } catch (e) {
-      console.log("Failed to parse JSON!");
-      console.log(e);
+      console.error("Failed to parse JSON!");
+      console.error(e);
       return;
     }
     str += ('<td>' + sel['prev'] + '</td><td>' + sel['next'] + '</td><td>' +
